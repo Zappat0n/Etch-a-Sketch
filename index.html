@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TESTS</title>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <fieldset>      
+      <legend>Please choose Sketch mode</legend>      
+      <input type="radio" name="mode" value="black" checked="true">Black<br>      
+      <input type="radio" name="mode" value="grey">Grey tones<br>      
+      <input type="radio" name="mode" value="colours">Random colours<br>
+      <input type="radio" name="mode" value="none">None<br>
+      <br>
+      <button class="reset">Reset</button>
+
+  </fieldset>   
+    <div class = "container1"></div>
+    <div class = "container2"></div>
+    <script>
+      /*
+      const container = document.querySelector(".container1");
+      for (let x = 0; x < 16; x++) {
+        const line = document.createElement('div');
+        for (let y = 0; y < 16; y++) {
+          const div = document.createElement('div');
+          div.setAttribute('id', 'cell');                              
+          div.style.borderStyle = "solid";
+          div.style.borderWidth = 1;
+          line.appendChild(div);
+        }
+        container.appendChild(line);
+      }
+      */
+      const container2 = document.querySelector('.container2');
+      
+      function resetGrid(columns){
+        while (container2.lastElementChild) {
+          container2.removeChild(container2.lastElementChild);
+        }     
+        let width = Math.round(960 / (columns));
+        container2.style['grid-template-columns'] = `repeat(${columns}, ${width+2}px)`;
+        for (let x = 0; x < columns * columns; x++) {
+        const cell2 = document.createElement('cell2');
+        cell2.setAttribute('id', 'cell2');
+        cell2.style.width = width+"px";
+        cell2.style.height = width+"px";
+        cell2.style.backgroundColor = 'yellow';
+        cell2.addEventListener('mouseover', mouseIsOver);                           
+        container2.appendChild(cell2);
+        }
+      }
+
+      function clickReset(e) {
+        let columns = window.prompt("Squares per side?", "16");
+        columns = parseInt(columns);
+        if (typeof columns == 'number') resetGrid(columns);
+      }
+
+      const buttonReset = document.querySelector('.reset');
+      buttonReset.addEventListener('click', clickReset);
+
+
+      function paintBlack(e) {
+        e.target.style.backgroundColor = 'black';
+      }
+
+      function paintGrey(e) {
+        if (e.target.style.backgroundColor == "yellow") {
+          e.target.style.backgroundColor = 'rgb(225, 225, 225)';
+        } else {
+          let value = e.target.style.backgroundColor;
+          value = value.substring(value.indexOf("(")+1, value.indexOf(","));
+          let newvalue = parseInt(value);
+          newvalue = (newvalue > 0) ? newvalue - 25 : 0;
+          e.target.style.backgroundColor = getRgbColor(newvalue, newvalue, newvalue);
+        }
+      }
+
+      function paintColour(e) {
+        e.target.style.backgroundColor = getRgbColor(Math.round(Math.random() * 255), 
+            Math.round(Math.random() * 255), Math.round(Math.random() * 255));
+      }
+
+      function getRgbColor(r, g, b) {
+        return 'rgb('+r+', '+g+', '+b+')';
+      }
+
+      function mouseIsOver(e) {
+        let mode = document.querySelector('input[name="mode"]:checked').value;
+
+        switch (mode) {
+          case 'black'  : paintBlack(e); break;
+          case 'grey'   : paintGrey(e); break;
+          case 'colours': paintColour(e); break;
+        }
+      }
+
+      resetGrid(16);
+    </script>
+</body>
+</html>
